@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">TestConnect</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="buttonView">View</string>
+    <string name="butttonAdd">Add New</string>
+    <string name="title_activity_all_ft">AllFTActivity</string>
+    <string name="title_activity_new_ft">NewFTActivity</string>
+    <string name="title_activity_edit_ft">EditFTActivity</string>
+    <string name="editTextReagent">Reagent</string>
+    <string name="editTextResult">Result</string>
+    <string name="buttonCreate">Create FoodTest</string>
+    <string name="editTextFoodName">Food Name</string>
+    <string name="buttonSave">Save</string>
+    <string name="buttonDelete">Delete</string>
+    <string name="title_activity_dashboard">DashboardActivity</string>
+
+</resources>
