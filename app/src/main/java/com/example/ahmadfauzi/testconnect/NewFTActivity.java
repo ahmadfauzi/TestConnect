@@ -47,7 +47,7 @@ public class NewFTActivity extends ActionBarActivity implements AsyncResponse{
     Button buttonCreate;
     ImageView imageViewPhoto;
 
-    private static String url_create_foodtest = "http://10.151.43.78/foodtest";
+    private static String url_create_foodtest = "http://10.151.12.222/foodtest";
     ClientSocket clientSocket = new ClientSocket(this, url_create_foodtest);
 
     private static final String TAG_SUCCESS = "success";
@@ -151,7 +151,7 @@ public class NewFTActivity extends ActionBarActivity implements AsyncResponse{
         byte[] b = baos.toByteArray();
         String imageEncoded = Base64.encodeToString(b, Base64.DEFAULT);
 
-        Log.d("NewFTActivity", imageEncoded);
+        //Log.d("NewFTActivity", imageEncoded);
         return imageEncoded;
     }
 /*
@@ -220,14 +220,16 @@ public class NewFTActivity extends ActionBarActivity implements AsyncResponse{
 
         progressDialog.dismiss();
         Log.d("NewActvity", "finish = " + String.valueOf(output));
-
+        Intent intent = new Intent(this, DashboardActivity.class);
+        startActivity(intent);
+        finish();
         try{
             int success = json.getInt(TAG_SUCCESS);
             if(success == 1){
-                Intent intent = new Intent(this, DashboardActivity.class);
-                startActivity(intent);
-                Toast.makeText(this, "Create FoodTest is success", Toast.LENGTH_SHORT).show();
-                finish();
+//                Toast.makeText(this, "Create FoodTest is success", Toast.LENGTH_SHORT).show();
+//                Intent intent = new Intent(this, DashboardActivity.class);
+//                startActivity(intent);
+//                finish();
             }else {
                 Toast.makeText(this, "Failed to create FoodTest", Toast.LENGTH_SHORT).show();
             }

@@ -36,8 +36,8 @@ public class ClientSocket extends AsyncTask<String, Void, String>{
         try {
             String urlParameter = args[0].toString();
             String url_t = this.base_url + urlParameter;
-
             URL url = new URL(url_t);
+
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestProperty("Content-Type", "application/json");
             conn.setRequestProperty("Accept", "application/json");
@@ -45,19 +45,17 @@ public class ClientSocket extends AsyncTask<String, Void, String>{
             int statusCode = conn.getResponseCode();
             InputStream is = null;
             System.out.println(statusCode);
-            Log.d("ClientSocket", statusCode + " : " + url_t);
+            Log.e("ClientSocket", url_t);
             if (statusCode == 200) {
                 is = new BufferedInputStream(conn.getInputStream());
                 BufferedReader br = new BufferedReader(new InputStreamReader(is));
-
                 String line = "";
                 while ((line = br.readLine()) != null) {
                     resp += line;
                 }
                 is.close();
                 return  resp;
-            } else
-            {
+            } else {
                 resp = "{RESP : 'ERROR' }";
                 return  resp;
             }

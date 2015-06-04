@@ -29,7 +29,7 @@ public class DashboardActivity extends ActionBarActivity implements AsyncRespons
     private ProgressDialog progressDialog;
 
     // url to get all foodtest list
-    private static String url_all_foodtest = "http://10.151.43.78/foodtest";
+    private static String url_all_foodtest = "http://10.151.12.222/foodtest";
     ClientSocket clientSocket = new ClientSocket(this, url_all_foodtest);
 
     // JSON Node names
@@ -85,6 +85,7 @@ public class DashboardActivity extends ActionBarActivity implements AsyncRespons
         switch (id){
             case R.id.action_add:
                 addNewFT();
+                finish();
                 break;
         }
 
@@ -100,6 +101,7 @@ public class DashboardActivity extends ActionBarActivity implements AsyncRespons
 
     @Override
     public void processFinish(String output) {
+        Log.e("DashboardActivity", "finish = " + String.valueOf(output));
         JSONObject json = new JSONObject();
         try{
             json = new JSONObject(output);

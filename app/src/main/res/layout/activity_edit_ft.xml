@@ -21,21 +21,24 @@
         android:layout_height="wrap_content"
         android:id="@+id/etName"
         android:hint="@string/editTextFoodName"
-        android:textSize="20dp" />
+        android:textSize="20dp"
+        android:singleLine="true" />
 
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/etReagent"
         android:hint="@string/editTextReagent"
-        android:textSize="20dp" />
+        android:textSize="20dp"
+        android:singleLine="true" />
 
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/etResult"
         android:hint="@string/editTextResult"
-        android:textSize="20dp" />
+        android:textSize="20dp"
+        android:singleLine="true" />
 
     <LinearLayout
         android:orientation="horizontal"
