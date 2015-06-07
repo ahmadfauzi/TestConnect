@@ -1,17 +1,26 @@
 package com.example.ahmadfauzi.testconnect;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.AsyncTask;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.util.Base64;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
+
+import com.example.ahmadfauzi.testconnect.dashboard.DashboardActivity;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
@@ -19,26 +28,28 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
 
-public class EditFTActivity extends ActionBarActivity {
+public class EditFTActivity extends ActionBarActivity implements AsyncResponse{
     EditText editTextName;
     EditText editTextReagent;
     EditText editTextResult;
-    Button buttonSave;
-    Button buttonDelete;
+    ImageView imageViewPhoto;
 
     String id;
+    String flagMenu;
 
-    private ProgressDialog progressDialog;
+//    private ProgressDialog progressDialog;
+    private ProgressDialog progressDialogSave;
+    private ProgressDialog progressDialogDelete;
 
-    // JSON parser class
-
-    private static final String url_foodtest_details = "/localhost/foodtest/get_foodtest_details.php";
-    private static final String url_update_foodtest = "/localhost/foodtest/update_foodtest.php";
-    private static final String url_delete_foodtest = "/localhost/foodtest/delete_foodtest.php";
+    private static final String url_foodtest= "http://10.151.12.144/foodtest";
+    ClientSocket clientSocketDetail = new ClientSocket(this, url_foodtest);
+    ClientSocket clientSocketUpdate = new ClientSocket(this, url_foodtest);
+    ClientSocket clientSocketDelete = new ClientSocket(this, url_foodtest);
 
     // JSON Node names
     private static final String TAG_SUCCESS = "success";
@@ -47,41 +58,50 @@ public class EditFTActivity extends ActionBarActivity {
     private static final String TAG_NAME = "name_FoodTest";
     private static final String TAG_REAGENT = "reagent_FoodTest";
     private static final String TAG_RESULT = "result_FoodTest";
+    private static final String TAG_PHOTO = "photo_FoodTest";
+
+    JSONArray foodtestJSONArray = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_ft);
 
-        buttonSave = (Button) findViewById(R.id.btnSave);
-        buttonDelete = (Button) findViewById(R.id.btnDelete);
+        editTextName = (EditText) findViewById(R.id.etName);
+        editTextReagent = (EditText) findViewById(R.id.etReagent);
+        editTextResult = (EditText) findViewById(R.id.etResult);
+        imageViewPhoto = (ImageView) findViewById(R.id.ivPhoto);
+
+        flagMenu = "DETAIL";
+
+        clientSocketDetail.delegate = this;
+        clientSocketUpdate.delegate = this;
+        clientSocketDelete.delegate = this;
+
+//        getSupportActionBar().setTitle("Detail");
+//        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         Intent intent = getIntent();
-
         // getting foodtest id) from intent
         id = intent.getStringExtra(TAG_ID_FOODTEST);
+        Log.d("EditFTActivity","id : " + id);
 
-        //Getting complete foodtest details in background thread
-        //new GetFTDetails().execute();
+        //Getting complete foodtest details
+//        progressDialog = new ProgressDialog(EditFTActivity.this);
+//        progressDialog.setMessage("Loading...");
+//        progressDialog.setIndeterminate(false);
+//        progressDialog.setCancelable(true);
+//        progressDialog.show();
 
-        buttonSave.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-          //      new SaveFTDetails().execute();
-            }
-        });
-
-        // Delete button click event
-        buttonDelete.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View arg0) {
-                // deleting foodtest in background thread
-            //    new DeleteFT().execute();
-            }
-        });
-
+        GetFTDetails();
     }
 
+    @Override
+    public void onBackPressed(){
+        Intent intent = new Intent(getApplicationContext(), DashboardActivity.class);
+        startActivity(intent);
+        finish();
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -98,187 +118,164 @@ public class EditFTActivity extends ActionBarActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
+        switch (id){
+            case android.R.id.home:
+                finish();
+                break;
+            case R.id.action_save:
+                flagMenu = "SAVE";
 
+                progressDialogSave = new ProgressDialog(EditFTActivity.this);
+                progressDialogSave.setMessage("Saving...");
+                progressDialogSave.setIndeterminate(false);
+                progressDialogSave.setCancelable(true);
+                progressDialogSave.show();
+
+                saveFT();
+                break;
+            case R.id.action_delete:
+                flagMenu = "DELETE";
+                deleteFT();
+                break;
+        }
         return super.onOptionsItemSelected(item);
     }
 
-    /**
-      * Background Async Task to Get complete foodtest details
-      **/
-//    class GetFTDetails extends AsyncTask<String, String, String>{
-//
-//        @Override
-//        protected void onPreExecute(){
-//            /**
-//             * Before starting background thread Show Progress Dialog
-//             * */
-//            super.onPreExecute();
-//            progressDialog = new ProgressDialog(EditFTActivity.this);
-//            progressDialog.setMessage("Loading FoodTest details. Please wait...");
-//            progressDialog.setIndeterminate(false);
-//            progressDialog.setCancelable(true);
-//            progressDialog.show();
-//        }
-//        /**
-//         * Getting foodtest details in background thread
-//         * */
-//        protected String doInBackground(String... params){
-//            runOnUiThread(new Runnable() {
-//                @Override
-//                public void run() {
-//                    int success;
-//                    try{
-//                        // Building Parameters
-//                        List<NameValuePair> params = new ArrayList<NameValuePair>();
-//                        params.add(new BasicNameValuePair("id_FoodTest", id));
-//
-//                        // getting foodtest details by making HTTP request
-//                        // Note that foodtest details url will use GET request
-//                        JSONObject json = new JSONParser().makeHttpRequest(url_update_foodtest,"GET", params);
-//
-//                        Log.d("Single FoodTest Details", json.toString());
-//
-//                        success = json.getInt(TAG_SUCCESS);
-//                        if (success == 1){
-//                            JSONArray foodtestObj = json.getJSONArray(TAG_FOODTEST);
-//                            // get first foodtest object from JSON Array
-//                            JSONObject foodtest = foodtestObj.getJSONObject(0);
-//
-//                            editTextName = (EditText) findViewById(R.id.etName);
-//                            editTextReagent = (EditText) findViewById(R.id.etReagent);
-//                            editTextResult = (EditText) findViewById(R.id.etResult);
-//
-//                            // display foodtest data in EditText
-//                            editTextName.setText(foodtest.getString(TAG_NAME));
-//                            editTextReagent.setText(foodtest.getString(TAG_REAGENT));
-//                            editTextResult.setText(foodtest.getString(TAG_RESULT));
-//                        }
-//                    }catch (JSONException e){
-//                        e.printStackTrace();
-//                    }
-//                }
-//            });
-//            return null;
-//        }
-//
-//        /**
-//         * After completing background task Dismiss the progress dialog
-//         * **/
-//        protected  void onPostExecute(String file_url){
+    private void GetFTDetails() {
+        String urlParameter = "/get_foodtest_details.php?id_FoodTest=" + id;
+        clientSocketDetail.execute(urlParameter);
+    }
+
+
+    private void saveFT(){
+        String name = editTextName.getText().toString();
+        String reagent = editTextReagent.getText().toString();
+        String result = editTextResult.getText().toString();
+
+//        Bitmap bitmap = ((BitmapDrawable) imageViewPhoto.getDrawable()).getBitmap();
+//        String photo = encodeToBase64(bitmap);
+
+        Toast.makeText(this,id + " " +  name + " " + reagent, Toast.LENGTH_SHORT).show();
+        if(!name.isEmpty() || !reagent.isEmpty() || !result.isEmpty()) {
+            String urlParameter = "/update_foodtest.php?name_FoodTest=" + name + "&reagent_FoodTest=" + reagent + "&result_FoodTest=" + result + "&id_FoodTest=" + id;
+            clientSocketUpdate.execute(urlParameter);
+        }else {
+            Toast.makeText(this, "Please fill the blank and insert photo", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private String encodeToBase64(Bitmap image){
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        image.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+        byte[] b = baos.toByteArray();
+        String imageEncoded = Base64.encodeToString(b, Base64.DEFAULT);
+
+        //Log.d("NewFTActivity", imageEncoded);
+        return imageEncoded;
+    }
+
+    private void deleteFT(){
+        final AlertDialog.Builder builder = new AlertDialog.Builder(EditFTActivity.this);
+
+        builder.setTitle("Are you sure?");
+        builder.setMessage("Data will be deleted");
+        builder.setPositiveButton("Delete", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                progressDialogDelete = new ProgressDialog(EditFTActivity.this);
+                progressDialogDelete.setMessage("Deleting...");
+                progressDialogDelete.setIndeterminate(false);
+                progressDialogDelete.setCancelable(true);
+                progressDialogDelete.show();
+
+                String urlParameter = "/delete_foodtest.php?id_FoodTest=" + id;
+                clientSocketDelete.execute(urlParameter);
+            }
+        });
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Toast.makeText(getApplicationContext(), "Cancel delete data", Toast.LENGTH_SHORT).show();
+                dialog.cancel();
+            }
+        });
+        builder.show();
+    }
+
+    @Override
+    public void processFinish(String output) {
+        Log.e("EditFTActivity", "finish = " + String.valueOf(output));
+        JSONObject json = new JSONObject();
+        try{
+            json = new JSONObject(output);
+        }catch (JSONException e){
+            e.printStackTrace();
+        }
+        Log.d("EditFTActivity","flag = " + flagMenu);
+        if(flagMenu.equals("DETAIL")) {
+            try {
+                int success = json.getInt(TAG_SUCCESS);
+                Toast.makeText(this, "success = " + String.valueOf(success), Toast.LENGTH_SHORT).show();
+                if (success == 1) {
+                    // foodtest found
+                    // Getting Array of FoodTest
+                    Toast.makeText(this, "Foodtest Found", Toast.LENGTH_SHORT).show();
+                    foodtestJSONArray = json.getJSONArray(TAG_FOODTEST);
+
+                    JSONObject jsonObject = foodtestJSONArray.getJSONObject(0);
+
+                    // Storing each json item in variable
+                    int id = jsonObject.getInt(TAG_ID_FOODTEST);
+                    String name = jsonObject.getString(TAG_NAME);
+                    String reagent = jsonObject.getString(TAG_REAGENT);
+                    String result = jsonObject.getString(TAG_RESULT);
+                    String photo = jsonObject.getString(TAG_PHOTO);
+                    Log.d("EditFTActivity", "id = " + id + ", photo = " + photo);
+
+                    //decode from String Base64 to Bitmap
+                    byte[] decodedString = Base64.decode(photo, Base64.NO_PADDING);
+                    Bitmap photoBitmap = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+
+                    editTextName = (EditText) findViewById(R.id.etName);
+                    editTextReagent = (EditText) findViewById(R.id.etReagent);
+                    editTextResult = (EditText) findViewById(R.id.etResult);
+
+                    editTextName.setText(name);
+                    editTextReagent.setText(reagent);
+                    editTextResult.setText(result);
+
+                    Log.d("EditFTActivity", "Detail = " + name + "//" + reagent + "//" + result);
+                } else {
+                    Toast.makeText(this, "Detail not found", Toast.LENGTH_SHORT).show();
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
 //            progressDialog.dismiss();
-//        }
-//    }
-//
-//    /**
-//     * Background Async Task to  Save foodtest Details
-//     * */
-//    class SaveFTDetails extends AsyncTask<String, String, String>{
-//        /**
-//         * Before starting background thread Show Progress Dialog
-//         * */
-//        @Override
-//        protected void onPreExecute(){
-//            super.onPreExecute();
-//            progressDialog = new ProgressDialog(EditFTActivity.this);
-//            progressDialog.setMessage("Saving Foodtest...");
-//            progressDialog.setIndeterminate(false);
-//            progressDialog.setCancelable(true);
-//            progressDialog.show();
-//        }
-//        /**
-//         * Saving foodtest
-//         * */
-//        protected String doInBackground(String... args){
-//            // getting updated data from EditTexts
-//            String name = editTextName.getText().toString();
-//            String reagent = editTextReagent.getText().toString();
-//            String result = editTextResult.getText().toString();
-//
-//            // Building Parameters
-//            List<NameValuePair> params = new ArrayList<NameValuePair>();
-//            params.add(new BasicNameValuePair(TAG_ID_FOODTEST, id));
-//            params.add(new BasicNameValuePair(TAG_NAME, name));
-//            params.add(new BasicNameValuePair(TAG_REAGENT, reagent));
-//            params.add(new BasicNameValuePair(TAG_RESULT, result));
-//
-//            // sending modified data through http request
-//            // Notice that update foodtest url accepts POST method
-//            JSONObject json = jsonParser.makeHttpRequest(url_update_foodtest, "POST", params);
-//            try {
-//                int success = json.getInt(TAG_SUCCESS);
-//                if(success == 1){
-//                    Intent intent = getIntent();
-//                    // send result code 100 to notify about foodtest update
-//                    setResult(100, intent);
-//                    finish();
-//                }else {
-//                    Toast.makeText(getApplicationContext(), "Saving failed", Toast.LENGTH_SHORT).show();
-//                }
-//            }catch (JSONException e){
-//                e.printStackTrace();
-//            }
-//            return null;
-//        }
-//        /**
-//         * After completing background task Dismiss the progress dialog
-//         * **/
-//        protected void onPostExecute(String file_url){
-//            progressDialog.dismiss();
-//        }
-//    }
-//    /**
-//      * Background Async Task to Delete FoodTest
-//      * */
-//    class DeleteFT extends AsyncTask<String, String, String> {
-//        /**
-//         * Before starting background thread Show Progress Dialog
-//         * */
-//        @Override
-//        protected void onPreExecute(){
-//            super.onPreExecute();
-//            progressDialog = new ProgressDialog(EditFTActivity.this);
-//            progressDialog.setMessage("Deleting FoodTest...");
-//            progressDialog.setIndeterminate(false);
-//            progressDialog.setCancelable(true);
-//            progressDialog.show();
-//        }
-//        /**
-//         * Deleting foodtest
-//         * */
-//        protected String doInBackground(String... args){
-//            int success;
-//            try{
-//                // Building Parameters
-//                List<NameValuePair> params = new ArrayList<NameValuePair>();
-//                params.add(new BasicNameValuePair("id_FoodTest",id));
-//
-//                // getting foodtest details by making HTTP request
-//                JSONObject json = jsonParser.makeHttpRequest(url_delete_foodtest,"POST",params);
-//
-//                Log.d("Delete FoodTest", json.toString());
-//
-//                success = json.getInt(TAG_SUCCESS);
-//                if(success == 1){
-//                    // foodtest successfully deleted
-//                    // notify previous activity by sending code 100
-//                    Intent intent = getIntent();
-//                    // send result code 100 to notify about foodtest deletion
-//                    setResult(100, intent);
-//                    finish();
-//                }
-//            }catch (JSONException e){
-//                e.printStackTrace();
-//            }
-//            return null;
-//        }
-//        /**
-//         * After completing background task Dismiss the progress dialog
-//         * **/
-//        protected void onPostExecute(String file_url){
-//            progressDialog.dismiss();
-//        }
-//    }
+
+        }else if(flagMenu.equals("SAVE")){
+            progressDialogSave.dismiss();
+            Toast.makeText(this, "Save Success", Toast.LENGTH_SHORT).show();
+            try{
+                int success = json.getInt(TAG_SUCCESS);
+                if(success == 1){
+                    Toast.makeText(this, "Update FoodTest is success", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(this, DashboardActivity.class);
+                    startActivity(intent);
+                    finish();
+                }else {
+                    Toast.makeText(this, "Failed to create FoodTest", Toast.LENGTH_SHORT).show();
+                }
+            }catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }else if(flagMenu.equals("DELETE")){
+            progressDialogDelete.dismiss();
+            Toast.makeText(this, "Delete Success", Toast.LENGTH_SHORT).show();
+
+            Intent intent = new Intent(getApplicationContext(), DashboardActivity.class);
+            startActivity(intent);
+            finish();
+        }
+    }
 }

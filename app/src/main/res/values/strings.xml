@@ -16,5 +16,7 @@
     <string name="buttonSave">Save</string>
     <string name="buttonDelete">Delete</string>
     <string name="title_activity_dashboard">DashboardActivity</string>
+    <string name="menuTitleSave">menuTitleSave</string>
+    <string name="menuTitleDelete">menuTitleDelete</string>
 
 </resources>

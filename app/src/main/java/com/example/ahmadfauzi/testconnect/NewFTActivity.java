@@ -47,7 +47,7 @@ public class NewFTActivity extends ActionBarActivity implements AsyncResponse{
     Button buttonCreate;
     ImageView imageViewPhoto;
 
-    private static String url_create_foodtest = "http://10.151.12.222/foodtest";
+    private static String url_create_foodtest = "http://10.151.12.144/foodtest";
     ClientSocket clientSocket = new ClientSocket(this, url_create_foodtest);
 
     private static final String TAG_SUCCESS = "success";
@@ -77,6 +77,13 @@ public class NewFTActivity extends ActionBarActivity implements AsyncResponse{
                 NewFTFunction(view);
             }
         });
+    }
+
+    @Override
+    public void onBackPressed(){
+        Intent intent = new Intent(getApplicationContext(), DashboardActivity.class);
+        startActivity(intent);
+        finish();
     }
 
     @Override
@@ -145,7 +152,7 @@ public class NewFTActivity extends ActionBarActivity implements AsyncResponse{
         }
     }
 
-    public static String encodeToBase64(Bitmap image){
+    private String encodeToBase64(Bitmap image){
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         image.compress(Bitmap.CompressFormat.JPEG, 100, baos);
         byte[] b = baos.toByteArray();
@@ -226,7 +233,7 @@ public class NewFTActivity extends ActionBarActivity implements AsyncResponse{
         try{
             int success = json.getInt(TAG_SUCCESS);
             if(success == 1){
-//                Toast.makeText(this, "Create FoodTest is success", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Create FoodTest is success", Toast.LENGTH_SHORT).show();
 //                Intent intent = new Intent(this, DashboardActivity.class);
 //                startActivity(intent);
 //                finish();

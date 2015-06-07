@@ -10,11 +10,15 @@ import android.util.Base64;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.ahmadfauzi.testconnect.AsyncResponse;
 import com.example.ahmadfauzi.testconnect.ClientSocket;
+import com.example.ahmadfauzi.testconnect.EditFTActivity;
 import com.example.ahmadfauzi.testconnect.NewFTActivity;
 import com.example.ahmadfauzi.testconnect.R;
 
@@ -29,7 +33,7 @@ public class DashboardActivity extends ActionBarActivity implements AsyncRespons
     private ProgressDialog progressDialog;
 
     // url to get all foodtest list
-    private static String url_all_foodtest = "http://10.151.12.222/foodtest";
+    private static String url_all_foodtest = "http://10.151.12.144/foodtest";
     ClientSocket clientSocket = new ClientSocket(this, url_all_foodtest);
 
     // JSON Node names
@@ -88,14 +92,26 @@ public class DashboardActivity extends ActionBarActivity implements AsyncRespons
                 finish();
                 break;
         }
-
         return super.onOptionsItemSelected(item);
     }
 
+    //Response from Edit Product Activity
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data){
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if(resultCode == 100){
+            // if result code 100 is received
+            // means user edited/deleted product
+            // reload this screen again
+            Intent intent = getIntent();
+            finish();
+            startActivity(intent);
+        }
+    }
+
     private void addNewFT() {
-        Bundle bundle = null;
         Intent intent = new Intent(this, NewFTActivity.class);
-        intent.putExtra("packetFromDashboard", bundle);
         startActivity(intent);
     }
 
@@ -112,11 +128,11 @@ public class DashboardActivity extends ActionBarActivity implements AsyncRespons
         try {
             foodtestLists = new ArrayList<FoodTest>();
             int success = json.getInt(TAG_SUCCESS);
-            Toast.makeText(this, "success = " + String.valueOf(success), Toast.LENGTH_SHORT).show();
+//            Toast.makeText(this, "success = " + String.valueOf(success), Toast.LENGTH_SHORT).show();
             if(success == 1){
                 // foodtest found
                 // Getting Array of FoodTest
-                Toast.makeText(this, "Foodtest Found", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(this, "Foodtest Found", Toast.LENGTH_SHORT).show();
                 foodtestJSONArray = json.getJSONArray(TAG_FOODTEST);
 
                 for(int i=0; i<foodtestJSONArray.length(); i++){
@@ -131,7 +147,7 @@ public class DashboardActivity extends ActionBarActivity implements AsyncRespons
                     Log.d("DashboardActivity", "id : " + id + ", photo : " + photo);
 
                     //decode from String Base64 to Bitmap
-                    byte[] decodedString = Base64.decode(photo, 0);
+                    byte[] decodedString = Base64.decode(photo, Base64.NO_PADDING);
                     Bitmap photoBitmap = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
 
 //                    // creating new HashMap
@@ -156,7 +172,7 @@ public class DashboardActivity extends ActionBarActivity implements AsyncRespons
 
                     foodtestLists.add(foodTest);
 
-                    Log.d("DashboardActivity", foodtestLists.toString());
+                    Log.e("DashboardActivity", "foodtestLists = " + foodtestLists.toString());
                 }
             }else{
                 // no foodtest found
@@ -186,5 +202,20 @@ public class DashboardActivity extends ActionBarActivity implements AsyncRespons
         // Attach the adapter to a ListView
         ListView listView = (ListView) findViewById(R.id.lvFoodTest);
         listView.setAdapter(adapter);
+
+        // on selecting single product
+        // launching Edit Product Screen
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                // getting values from selected ListItem
+                String foodtest_id = ((TextView) view.findViewById(R.id.tvId)).getText().toString();
+
+                Intent intent = new Intent(getApplicationContext(), EditFTActivity.class);
+                intent.putExtra(TAG_ID_FOODTEST, foodtest_id);
+                startActivityForResult(intent, 100);
+                finish();
+            }
+        });
     }
 }

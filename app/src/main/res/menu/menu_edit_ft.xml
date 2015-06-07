@@ -4,4 +4,18 @@
     tools:context="com.example.ahmadfauzi.testconnect.EditFTActivity">
     <item android:id="@+id/action_settings" android:title="@string/action_settings"
         android:orderInCategory="100" app:showAsAction="never" />
+
+    <item
+        android:id="@+id/action_save"
+        android:title="@string/menuTitleSave"
+        android:icon="@drawable/ic_action_done"
+        app:showAsAction="always"
+        />
+
+    <item
+        android:id="@+id/action_delete"
+        android:title="@string/menuTitleDelete"
+        android:icon="@drawable/ic_action_remove"
+        app:showAsAction="always"
+        />
 </menu>

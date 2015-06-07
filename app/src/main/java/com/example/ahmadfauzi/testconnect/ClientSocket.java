@@ -42,10 +42,11 @@ public class ClientSocket extends AsyncTask<String, Void, String>{
             conn.setRequestProperty("Content-Type", "application/json");
             conn.setRequestProperty("Accept", "application/json");
             conn.setRequestMethod("GET");
+            conn.setConnectTimeout(500);
             int statusCode = conn.getResponseCode();
             InputStream is = null;
-            System.out.println(statusCode);
-            Log.e("ClientSocket", url_t);
+            Log.d("ClientSocket", "URL = " + url_t);
+            Log.d("ClientSocket", "Status Code = " + String.valueOf(statusCode));
             if (statusCode == 200) {
                 is = new BufferedInputStream(conn.getInputStream());
                 BufferedReader br = new BufferedReader(new InputStreamReader(is));
