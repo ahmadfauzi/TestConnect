@@ -4,4 +4,11 @@
     tools:context="com.example.ahmadfauzi.testconnect.NewFTActivity">
     <item android:id="@+id/action_settings" android:title="@string/action_settings"
         android:orderInCategory="100" app:showAsAction="never" />
+
+    <item
+        android:id="@+id/action_new"
+        android:title="menuTitleNew"
+        android:icon="@drawable/ic_action_done"
+        app:showAsAction="always"
+        />
 </menu>

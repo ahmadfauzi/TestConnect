@@ -46,7 +46,7 @@ public class EditFTActivity extends ActionBarActivity implements AsyncResponse{
     private ProgressDialog progressDialogSave;
     private ProgressDialog progressDialogDelete;
 
-    private static final String url_foodtest= "http://10.151.12.144/foodtest";
+    private static final String url_foodtest= "http://10.151.12.97/foodtest";
     ClientSocket clientSocketDetail = new ClientSocket(this, url_foodtest);
     ClientSocket clientSocketUpdate = new ClientSocket(this, url_foodtest);
     ClientSocket clientSocketDelete = new ClientSocket(this, url_foodtest);

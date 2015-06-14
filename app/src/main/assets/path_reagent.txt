@@ -1,0 +1,7 @@
+Borax,Borax1,PhotoM-X01/Borax/0.png,0
+Borax,Borax2,PhotoM-X01/Borax/50.png,50
+Borax,Borax3,PhotoM-X01/Borax/100.png,100
+Borax,Borax4,PhotoM-X01/Borax/150.png,150
+Borax,Borax5,PhotoM-X01/Borax/200.png,200
+Borax,Borax6,PhotoM-X01/Borax/5000.png,5000
+Borax,Borax7,PhotoM-X01/Borax/10000.png,10000

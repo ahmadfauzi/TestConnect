@@ -33,7 +33,7 @@ public class DashboardActivity extends ActionBarActivity implements AsyncRespons
     private ProgressDialog progressDialog;
 
     // url to get all foodtest list
-    private static String url_all_foodtest = "http://10.151.12.144/foodtest";
+    private static String url_all_foodtest = "http://10.151.12.97/foodtest";
     ClientSocket clientSocket = new ClientSocket(this, url_all_foodtest);
 
     // JSON Node names
@@ -53,6 +53,8 @@ public class DashboardActivity extends ActionBarActivity implements AsyncRespons
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dashboard);
+
+        Toast.makeText(this, "URL = " + url_all_foodtest, Toast.LENGTH_SHORT).show();
 
         clientSocket.delegate = this;
 
