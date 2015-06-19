@@ -33,7 +33,7 @@ public class DashboardActivity extends ActionBarActivity implements AsyncRespons
     private ProgressDialog progressDialog;
 
     // url to get all foodtest list
-    private static String url_all_foodtest = "http://10.151.12.97/foodtest";
+    private static String url_all_foodtest = "http://10.151.44.167/foodtest";
     ClientSocket clientSocket = new ClientSocket(this, url_all_foodtest);
 
     // JSON Node names
@@ -54,16 +54,18 @@ public class DashboardActivity extends ActionBarActivity implements AsyncRespons
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dashboard);
 
-        Toast.makeText(this, "URL = " + url_all_foodtest, Toast.LENGTH_SHORT).show();
+        setTitle("Uji Makanan");
+
+//        Toast.makeText(this, "URL = " + url_all_foodtest, Toast.LENGTH_SHORT).show();
 
         clientSocket.delegate = this;
 
-        progressDialog = new ProgressDialog(DashboardActivity.this);
-        progressDialog.setMessage("Loading...");
-        progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-        progressDialog.setProgress(0);
-        progressDialog.setMax(100);
-        progressDialog.show();
+//        progressDialog = new ProgressDialog(DashboardActivity.this);
+//        progressDialog.setMessage("Memuat...");
+//        progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+//        progressDialog.setProgress(0);
+//        progressDialog.setMax(100);
+//        progressDialog.show();
 
         AllFTFunction();
     }
@@ -146,30 +148,21 @@ public class DashboardActivity extends ActionBarActivity implements AsyncRespons
                     String reagent = jsonObject.getString(TAG_REAGENT);
                     String result = jsonObject.getString(TAG_RESULT);
                     String photo = jsonObject.getString(TAG_PHOTO);
+                    String name_replaced = name.replaceAll("_"," ");
+                    String reagent_replaced = reagent.replaceAll("_"," ");
+                    String result_replaced = result.replaceAll("_"," ");
                     Log.d("DashboardActivity", "id : " + id + ", photo : " + photo);
 
                     //decode from String Base64 to Bitmap
                     byte[] decodedString = Base64.decode(photo, Base64.NO_PADDING);
                     Bitmap photoBitmap = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
 
-//                    // creating new HashMap
-//                    HashMap<String, String> map = new HashMap<String, String>();
-//
-//                    // adding each child node to HashMap key => value
-//                    map.put(TAG_ID_FOODTEST,id);
-//                    map.put(TAG_NAME, name);
-//                    map.put(TAG_REAGENT, reagent);
-//                    map.put(TAG_RESULT, result);
-//                    //map.put(TAG_PHOTO, photo);
-//
-//                    // adding HashList to ArrayList
-//                    foodtestList.add(map);
                     Log.d("DashboardActivity",id + "//" + name + "//" + reagent + "//" + result + "//" + photoBitmap);
                     FoodTest foodTest = new FoodTest();
                     foodTest.setIdFT(id);
-                    foodTest.setNameFT(name);
-                    foodTest.setReagentFT(reagent);
-                    foodTest.setResultFT(result);
+                    foodTest.setNameFT(name_replaced);
+                    foodTest.setReagentFT(reagent_replaced);
+                    foodTest.setResultFT(result_replaced);
                     foodTest.setPhotoFT(photoBitmap);
 
                     foodtestLists.add(foodTest);
@@ -193,7 +186,7 @@ public class DashboardActivity extends ActionBarActivity implements AsyncRespons
 
         populateFoodTestList();
 
-        progressDialog.dismiss();
+//        progressDialog.dismiss();
 
         Log.d("DashboardActivity", "inside arraylist = " + foodtestLists.toString());
     }

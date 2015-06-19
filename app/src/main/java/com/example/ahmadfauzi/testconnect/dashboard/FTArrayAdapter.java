@@ -42,15 +42,15 @@ public class FTArrayAdapter extends ArrayAdapter<FoodTest> {
         // Populate the data into the template view using the data object
         textViewId.setText(String.valueOf(foodTest.idFT));
         if(!foodTest.getNameFT().isEmpty()){
-            textViewName.setText("Food Name : " + foodTest.nameFT);
+            textViewName.setText("Makanan : " + foodTest.nameFT);
         }
 
         if(!foodTest.getReagentFT().isEmpty()){
-            textViewReagent.setText("Reagent : " + foodTest.reagentFT);
+            textViewReagent.setText("Reagen : " + foodTest.reagentFT);
         }
 
         if(!foodTest.getResultFT().isEmpty()){
-            textViewResult.setText("Result : " + foodTest.resultFT);
+            textViewResult.setText("Hasil : " + foodTest.resultFT);
         }
 
         imageViewPhoto.setImageBitmap(foodTest.photoFT);

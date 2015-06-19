@@ -42,7 +42,6 @@ public class ClientSocket extends AsyncTask<String, Void, String>{
             conn.setRequestProperty("Content-Type", "application/json");
             conn.setRequestProperty("Accept", "application/json");
             conn.setRequestMethod("GET");
-            conn.setConnectTimeout(7000);
             int statusCode = conn.getResponseCode();
             InputStream is = null;
             Log.d("ClientSocket", "URL = " + url_t);

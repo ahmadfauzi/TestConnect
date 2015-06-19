@@ -54,12 +54,10 @@ public class NewFTActivity extends ActionBarActivity implements AsyncResponse{
     Button buttonCreate;
     ImageView imageViewPhoto;
 
-    private static String url_create_foodtest = "http://10.151.12.97/foodtest";
+    private static String url_create_foodtest = "http://10.151.44.167/foodtest";
     ClientSocket clientSocket = new ClientSocket(this, url_create_foodtest);
 
     private static final String TAG_SUCCESS = "success";
-
-    private Uri mImageCaptureUri;
 
     private static final int PICK_FROM_CAMERA = 1;
     private static final int PICK_FROM_FILE = 2 ;
@@ -74,6 +72,8 @@ public class NewFTActivity extends ActionBarActivity implements AsyncResponse{
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_ft);
+
+        setTitle("Tambah Uji");
 
         editTextName = (EditText) findViewById(R.id.etName);
         editTextReagent = (EditText) findViewById(R.id.etReagent);
@@ -141,12 +141,6 @@ public class NewFTActivity extends ActionBarActivity implements AsyncResponse{
                 finish();
                 break;
             case R.id.action_new:
-                progressDialog = new ProgressDialog(NewFTActivity.this);
-                progressDialog.setMessage("Creating FoodTest....");
-                progressDialog.setIndeterminate(false);
-                progressDialog.setCancelable(true);
-                progressDialog.show();
-
                 NewFTFunction();
                 break;
         }
@@ -189,45 +183,33 @@ public class NewFTActivity extends ActionBarActivity implements AsyncResponse{
                 }
                 break;
         }
-
-//        if(resultCode == RESULT_OK){
-//            if(requestCode == GALLERY_REQUEST_CODE){
-//                Uri selectedImageUri = data.getData();
-//                try{
-//                    ParcelFileDescriptor parcelFileDescriptor = getContentResolver().openFileDescriptor(selectedImageUri, "r");
-//                    FileDescriptor fileDescriptor = parcelFileDescriptor.getFileDescriptor();
-//                    Bitmap image = BitmapFactory.decodeFileDescriptor(fileDescriptor);
-//                    parcelFileDescriptor.close();
-//
-//                    String filePhoto = selectedImageUri.toString();
-//                    ImageView mIvPhoto = (ImageView) findViewById(R.id.ivPhoto);
-//                    mIvPhoto.setImageBitmap(image);
-//                    Toast.makeText(this,"Photo taken from: " + filePhoto.toString(), Toast.LENGTH_SHORT).show();
-//                }catch (FileNotFoundException e){
-//                    e.printStackTrace();
-//                } catch (IOException e){
-//                    e.printStackTrace();
-//                }
-//            }
-//        }
     }
 
     private void NewFTFunction() {
         String name = editTextName.getText().toString();
         String reagent = editTextReagent.getText().toString();
         String result = editTextResult.getText().toString();
+        String name_replaced = name.replaceAll(" ","_");
+        String reagent_replaced = reagent.replaceAll(" ","_");
+        String result_replaced = result.replaceAll(" ","_");
 
         Bitmap bitmap = ((BitmapDrawable) imageViewPhoto.getDrawable()).getBitmap();
         String photo = encodeToBase64(bitmap);
 
-        Toast.makeText(this, name + " " + reagent, Toast.LENGTH_LONG).show();
+//        Toast.makeText(this, name_replaced + " " + reagent_replaced, Toast.LENGTH_LONG).show();
         if(!name.isEmpty() || !reagent.isEmpty() || !result.isEmpty()){
-            String urlParameter = "/create_foodtest.php?name_FoodTest=" + name + "&reagent_FoodTest=" + reagent + "&result_FoodTest=" + result + "&photo_FoodTest=" + photo;
+            progressDialog = new ProgressDialog(NewFTActivity.this);
+            progressDialog.setMessage("Menambahkan....");
+            progressDialog.setIndeterminate(false);
+            progressDialog.setCancelable(true);
+            progressDialog.show();
+
+            String urlParameter = "/create_foodtest.php?name_FoodTest=" + name_replaced + "&reagent_FoodTest=" + reagent_replaced + "&result_FoodTest=" + result_replaced + "&photo_FoodTest=" + photo;
             clientSocket.execute(urlParameter);
 
-            //Toast.makeText(this, urlParameter, Toast.LENGTH_SHORT).show();
+//            Toast.makeText(this, urlParameter, Toast.LENGTH_SHORT).show();
         }else {
-            Toast.makeText(this, "Please fill the blank and insert photo", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Tolong isi tempat yang kosong", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -258,12 +240,12 @@ public class NewFTActivity extends ActionBarActivity implements AsyncResponse{
         try{
             int success = json.getInt(TAG_SUCCESS);
             if(success == 1){
-                Toast.makeText(this, "Create FoodTest is success", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Berhasil menambahkan", Toast.LENGTH_SHORT).show();
 //                Intent intent = new Intent(this, DashboardActivity.class);
 //                startActivity(intent);
 //                finish();
             }else {
-                Toast.makeText(this, "Failed to create FoodTest", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Gagal menambahkan", Toast.LENGTH_SHORT).show();
             }
         }catch (JSONException e) {
             e.printStackTrace();
@@ -328,15 +310,17 @@ public class NewFTActivity extends ActionBarActivity implements AsyncResponse{
 
     private String getResult(){
         ColorComparators colorComparators;
+        String result = null;
 
         colorComparators = new ColorComparators(testSample, reagent);
         int resultIndex = colorComparators.getCompareResult();
-        Log.d("MainActivity",reagent.getColorBarValue().get(resultIndex));
 
         if(resultIndex == -1){
             resultIndex = 0;
         }
-        String result = reagent.getColorBarValue().get(resultIndex);
+        result = reagent.getColorBarValue().get(resultIndex);
+        Log.d("MainActivity", "RESULT = " + result);
+
         return result;
     }
 

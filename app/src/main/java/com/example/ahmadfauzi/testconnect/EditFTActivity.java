@@ -45,8 +45,9 @@ public class EditFTActivity extends ActionBarActivity implements AsyncResponse{
 //    private ProgressDialog progressDialog;
     private ProgressDialog progressDialogSave;
     private ProgressDialog progressDialogDelete;
+    private ProgressDialog progressDialogDetail;
 
-    private static final String url_foodtest= "http://10.151.12.97/foodtest";
+    private static final String url_foodtest= "http://10.151.44.167/foodtest";
     ClientSocket clientSocketDetail = new ClientSocket(this, url_foodtest);
     ClientSocket clientSocketUpdate = new ClientSocket(this, url_foodtest);
     ClientSocket clientSocketDelete = new ClientSocket(this, url_foodtest);
@@ -67,6 +68,8 @@ public class EditFTActivity extends ActionBarActivity implements AsyncResponse{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_ft);
 
+        setTitle("Detail");
+
         editTextName = (EditText) findViewById(R.id.etName);
         editTextReagent = (EditText) findViewById(R.id.etReagent);
         editTextResult = (EditText) findViewById(R.id.etResult);
@@ -78,20 +81,17 @@ public class EditFTActivity extends ActionBarActivity implements AsyncResponse{
         clientSocketUpdate.delegate = this;
         clientSocketDelete.delegate = this;
 
-//        getSupportActionBar().setTitle("Detail");
-//        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
         Intent intent = getIntent();
         // getting foodtest id) from intent
         id = intent.getStringExtra(TAG_ID_FOODTEST);
         Log.d("EditFTActivity","id : " + id);
 
         //Getting complete foodtest details
-//        progressDialog = new ProgressDialog(EditFTActivity.this);
-//        progressDialog.setMessage("Loading...");
-//        progressDialog.setIndeterminate(false);
-//        progressDialog.setCancelable(true);
-//        progressDialog.show();
+        progressDialogDetail = new ProgressDialog(EditFTActivity.this);
+        progressDialogDetail.setMessage("Memuat...");
+        progressDialogDetail.setIndeterminate(false);
+        progressDialogDetail.setCancelable(true);
+        progressDialogDetail.show();
 
         GetFTDetails();
     }
@@ -126,7 +126,7 @@ public class EditFTActivity extends ActionBarActivity implements AsyncResponse{
                 flagMenu = "SAVE";
 
                 progressDialogSave = new ProgressDialog(EditFTActivity.this);
-                progressDialogSave.setMessage("Saving...");
+                progressDialogSave.setMessage("Menyimpan...");
                 progressDialogSave.setIndeterminate(false);
                 progressDialogSave.setCancelable(true);
                 progressDialogSave.show();
@@ -160,7 +160,7 @@ public class EditFTActivity extends ActionBarActivity implements AsyncResponse{
             String urlParameter = "/update_foodtest.php?name_FoodTest=" + name + "&reagent_FoodTest=" + reagent + "&result_FoodTest=" + result + "&id_FoodTest=" + id;
             clientSocketUpdate.execute(urlParameter);
         }else {
-            Toast.makeText(this, "Please fill the blank and insert photo", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Tolong isi pada tempat yang kosong", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -183,7 +183,7 @@ public class EditFTActivity extends ActionBarActivity implements AsyncResponse{
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 progressDialogDelete = new ProgressDialog(EditFTActivity.this);
-                progressDialogDelete.setMessage("Deleting...");
+                progressDialogDelete.setMessage("Menghapus...");
                 progressDialogDelete.setIndeterminate(false);
                 progressDialogDelete.setCancelable(true);
                 progressDialogDelete.show();
@@ -195,7 +195,7 @@ public class EditFTActivity extends ActionBarActivity implements AsyncResponse{
         builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                Toast.makeText(getApplicationContext(), "Cancel delete data", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(getApplicationContext(), "Cancel delete data", Toast.LENGTH_SHORT).show();
                 dialog.cancel();
             }
         });
@@ -215,11 +215,11 @@ public class EditFTActivity extends ActionBarActivity implements AsyncResponse{
         if(flagMenu.equals("DETAIL")) {
             try {
                 int success = json.getInt(TAG_SUCCESS);
-                Toast.makeText(this, "success = " + String.valueOf(success), Toast.LENGTH_SHORT).show();
+//                Toast.makeText(this, "success = " + String.valueOf(success), Toast.LENGTH_SHORT).show();
                 if (success == 1) {
                     // foodtest found
                     // Getting Array of FoodTest
-                    Toast.makeText(this, "Foodtest Found", Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(this, "Uji Ditemukan", Toast.LENGTH_SHORT).show();
                     foodtestJSONArray = json.getJSONArray(TAG_FOODTEST);
 
                     JSONObject jsonObject = foodtestJSONArray.getJSONObject(0);
@@ -246,32 +246,32 @@ public class EditFTActivity extends ActionBarActivity implements AsyncResponse{
 
                     Log.d("EditFTActivity", "Detail = " + name + "//" + reagent + "//" + result);
                 } else {
-                    Toast.makeText(this, "Detail not found", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, "Detail tidak ditemukan", Toast.LENGTH_SHORT).show();
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-//            progressDialog.dismiss();
+            progressDialogDetail.dismiss();
 
         }else if(flagMenu.equals("SAVE")){
             progressDialogSave.dismiss();
-            Toast.makeText(this, "Save Success", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Menyimpan Uji Berhasil", Toast.LENGTH_SHORT).show();
             try{
                 int success = json.getInt(TAG_SUCCESS);
                 if(success == 1){
-                    Toast.makeText(this, "Update FoodTest is success", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, "Update Uji Berhasil", Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(this, DashboardActivity.class);
                     startActivity(intent);
                     finish();
                 }else {
-                    Toast.makeText(this, "Failed to create FoodTest", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, "Update Uji Gagal", Toast.LENGTH_SHORT).show();
                 }
             }catch (JSONException e) {
                 e.printStackTrace();
             }
         }else if(flagMenu.equals("DELETE")){
             progressDialogDelete.dismiss();
-            Toast.makeText(this, "Delete Success", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Menghapus Berhasil", Toast.LENGTH_SHORT).show();
 
             Intent intent = new Intent(getApplicationContext(), DashboardActivity.class);
             startActivity(intent);

@@ -21,7 +21,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/etName"
-        android:hint="@string/editTextFoodName"
+        android:hint="Nama Makanan"
         android:textSize="20dp"
         android:singleLine="true" />
 
@@ -29,7 +29,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/etReagent"
-        android:hint="@string/editTextReagent"
+        android:hint="Reagen"
         android:textSize="20dp"
         android:singleLine="true" />
 
@@ -37,7 +37,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/etResult"
-        android:hint="@string/editTextResult"
+        android:hint="Hasil"
         android:textSize="20dp"
         android:singleLine="true" />
 
