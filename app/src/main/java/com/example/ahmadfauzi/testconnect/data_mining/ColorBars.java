@@ -105,21 +105,4 @@ public class ColorBars {
             e.printStackTrace();
         }
     }
-
-    public static void main(String[] args) {
-		/*ColorBars aset = new ColorBars();
-		aset.getAllColorBars();
-		System.out.println(aset.colorBarPath.size());
-		System.out.println(aset.colorBarValue.size());
-		System.out.println(aset.foodTestCode.size());
-		System.out.println(aset.foodTestNames.size());
-		for (Map.Entry<String, String> entry : aset.colorBarPath.entrySet()) {
-			System.out.println(entry.getKey()+" "+entry.getValue());
-		}
-
-		for (Map.Entry<String, String> entry : aset.colorBarValue.entrySet()) {
-			System.out.println(entry.getKey()+" "+entry.getValue());
-		}
-		*/
-    }
 }

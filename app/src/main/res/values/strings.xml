@@ -18,5 +18,12 @@
     <string name="title_activity_dashboard">DashboardActivity</string>
     <string name="menuTitleSave">menuTitleSave</string>
     <string name="menuTitleDelete">menuTitleDelete</string>
+    <string-array name="reagen">
+        <item>Borax</item>
+        <item>Rhodamin-B</item>
+        <item>Formalin</item>
+        <item>Methanyl-Yellow</item>
+        <item>Mercury</item>
+    </string-array>
 
 </resources>

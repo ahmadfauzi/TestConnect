@@ -4,21 +4,19 @@ import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.util.Log;
 
-import com.example.ahmadfauzi.testconnect.data_mining.Reagent;
-
 import java.util.ArrayList;
 
 /**
  * Created by Ahmad Fauzi on 5/21/2015.
  */
 public class ColorComparators {
-    private ArrayList<LabColor> TestResultLab = new ArrayList<LabColor>();
+    private ArrayList<LabColor> testResultLab = new ArrayList<LabColor>();
     private ArrayList<ArrayList<LabColor> > referenceLab = new ArrayList<ArrayList<LabColor> >();
     private ArrayList<ArrayList<Double> > distance = new ArrayList<ArrayList<Double> >();
     private ArrayList<Integer> classResult = new ArrayList<Integer>();
     private ArrayList<Integer> votes = new ArrayList<Integer>();
     private Sample sample;
-    private Reagent foodTest;
+    private Reagent reagent;
     private ArrayList<Bitmap> colorBars;
 
     private Integer imageWidth = 10;
@@ -28,9 +26,9 @@ public class ColorComparators {
 
     }
 
-    public ColorComparators(Sample sample, Reagent foodTest) {
+    public ColorComparators(Sample sample, Reagent reagent) {
         this.sample = sample;
-        this.foodTest = foodTest;
+        this.reagent = reagent;
     }
 
     public Integer getCompareResult() {
@@ -44,7 +42,7 @@ public class ColorComparators {
 
     private void colorBarConversion() {
         colorBars = new ArrayList<Bitmap>();
-        colorBars = foodTest.getColorBarsImage();
+        colorBars = reagent.getColorBarsImage();
         //ArrayList<Color> colors = new ArrayList<Color>();
         ArrayList<RgbColor> colors = new ArrayList<RgbColor>();
         Log.d("ColorComparator", "Color Bar = " + colorBars.toString());
@@ -74,7 +72,7 @@ public class ColorComparators {
         Bitmap croppedImage = Bitmap.createBitmap(bufferedImage, x, y, this.imageWidth, this.imageHeight);
         ArrayList<RgbColor> colors = new ArrayList<RgbColor>();
         colors = getRGB(croppedImage, this.imageWidth, this.imageHeight);
-        TestResultLab = RGBtoLab(colors);
+        testResultLab = RGBtoLab(colors);
         // printTestResult();
     }
 
@@ -188,7 +186,7 @@ public class ColorComparators {
     }
 
     private void printTestResult() {
-        for (LabColor labColor : TestResultLab) {
+        for (LabColor labColor : testResultLab) {
             System.out.println(labColor.getL()+" "+labColor.getA()+" "+labColor.getB());
         }
     }
@@ -214,7 +212,7 @@ public class ColorComparators {
 //			   LabColor test = new LabColor();
 //
 //			   reference = referenceLab.get(i).get(j);
-//			   test = TestResultLab.get(j);
+//			   test = testResultLab.get(j);
 //
 //			   double distance = getEuclidianDistance(reference, test);
 //			   System.out.println("distance "+distance);
@@ -240,7 +238,7 @@ public class ColorComparators {
         }
         System.out.println("data Training");
         // printArray2dDouble(dataTraining);
-        for (LabColor labColor : TestResultLab) {
+        for (LabColor labColor : testResultLab) {
             ArrayList<Double> data = new ArrayList<Double>();
             data.add(labColor.L);
             data.add(labColor.a);

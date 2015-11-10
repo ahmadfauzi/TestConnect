@@ -35,8 +35,6 @@ public class Reagent {
     public void setTestName(String testName) {
         this.testName = testName;
     }
-
-
     public ArrayList<String> getColorBarsPath() {
         return colorBarsPath;
     }

@@ -2,13 +2,6 @@ package com.example.ahmadfauzi.testconnect.dashboard;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.os.Bundle;
-
-import com.example.ahmadfauzi.testconnect.ClientSocket;
-
-import java.io.Serializable;
-import java.lang.reflect.Array;
-import java.util.ArrayList;
 
 /**
  * Created by Ahmad Fauzi on 5/26/2015.

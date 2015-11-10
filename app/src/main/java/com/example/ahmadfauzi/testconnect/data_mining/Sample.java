@@ -15,7 +15,7 @@ public class Sample {
     private ArrayList<LabColor> labSample;
     private ArrayList<Color> RGBSample;
     private String result_mgl;
-    private String SAMPLE_PATH;
+    private String path;
     private String dateTime;
     private String testName;
 
@@ -40,13 +40,13 @@ public class Sample {
         this.testName = testName;
     }
 
-    public void setSamplePath(String path){
-        //this.SAMPLE_PATH = ".\\assets\\TestColorBar\\Borax\\test2.PNG";
-        this.SAMPLE_PATH = path;
+    public void setSamplePath(String samplePath){
+        //this.path = ".\\assets\\TestColorBar\\Borax\\test2.PNG";
+        this.path = samplePath;
     }
 
     public String getSamplePath() {
-        return this.SAMPLE_PATH;
+        return this.path;
     }
 
     public ArrayList<LabColor> getLabSample() {
@@ -67,11 +67,11 @@ public class Sample {
 
     public Bitmap getSample() {
         Bitmap bitmapSample = null;
-        String samplePath = this.SAMPLE_PATH;
+        String sampleImagePath = this.path;
 
         bitmapSample = BitmapFactory.decodeFile(this.getSamplePath());
 
-        Log.d("Sample", "sample path = " + samplePath);
+        Log.d("Sample", "sample path = " + sampleImagePath);
         Log.d("Sample", " Sample = " + this.getSamplePath());
         return bitmapSample;
     }

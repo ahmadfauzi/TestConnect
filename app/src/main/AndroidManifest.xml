@@ -27,11 +27,11 @@
             android:label="@string/title_activity_all_ft" >
         </activity>
         <activity
-            android:name=".NewFTActivity"
+            android:name=".NewFoodTestActivity"
             android:label="@string/title_activity_new_ft" >
         </activity>
         <activity
-            android:name=".EditFTActivity"
+            android:name=".EditFoodTestActivity"
             android:label="@string/title_activity_edit_ft" >
         </activity>
         <activity

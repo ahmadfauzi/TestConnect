@@ -17,9 +17,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.ahmadfauzi.testconnect.AsyncResponse;
-import com.example.ahmadfauzi.testconnect.ClientSocket;
-import com.example.ahmadfauzi.testconnect.EditFTActivity;
-import com.example.ahmadfauzi.testconnect.NewFTActivity;
+import com.example.ahmadfauzi.testconnect.ClientConnect;
+import com.example.ahmadfauzi.testconnect.EditFoodTestActivity;
+import com.example.ahmadfauzi.testconnect.NewFoodTestActivity;
 import com.example.ahmadfauzi.testconnect.R;
 
 import org.json.JSONArray;
@@ -27,19 +27,18 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 public class DashboardActivity extends ActionBarActivity implements AsyncResponse {
     private ProgressDialog progressDialog;
 
     // url to get all foodtest list
-    private static String url_all_foodtest = "http://10.151.44.167/foodtest";
-    ClientSocket clientSocket = new ClientSocket(this, url_all_foodtest);
+    private static String url_all_foodtest = "http://10.151.43.75/foodtest";
+    ClientConnect clientConnect = new ClientConnect(this, url_all_foodtest);
 
     // JSON Node names
     private static final String TAG_SUCCESS = "success";
     private static final String TAG_FOODTEST = "foodtest";
-    private static final String TAG_ID_FOODTEST = "id_FoodTest";
+    private static final String TAG_ID = "id_FoodTest";
     private static final String TAG_NAME = "name_FoodTest";
     private static final String TAG_REAGENT = "reagent_FoodTest";
     private static final String TAG_RESULT = "result_FoodTest";
@@ -58,7 +57,7 @@ public class DashboardActivity extends ActionBarActivity implements AsyncRespons
 
 //        Toast.makeText(this, "URL = " + url_all_foodtest, Toast.LENGTH_SHORT).show();
 
-        clientSocket.delegate = this;
+        clientConnect.delegate = this;
 
 //        progressDialog = new ProgressDialog(DashboardActivity.this);
 //        progressDialog.setMessage("Memuat...");
@@ -67,12 +66,12 @@ public class DashboardActivity extends ActionBarActivity implements AsyncRespons
 //        progressDialog.setMax(100);
 //        progressDialog.show();
 
-        AllFTFunction();
+        AllFoodTestFunction();
     }
 
-    private void AllFTFunction() {
+    private void AllFoodTestFunction() {
         String urlParameter = "/get_all_foodtest.php";
-        clientSocket.execute(urlParameter);
+        clientConnect.execute(urlParameter);
     }
 
     @Override
@@ -115,7 +114,7 @@ public class DashboardActivity extends ActionBarActivity implements AsyncRespons
     }
 
     private void addNewFT() {
-        Intent intent = new Intent(this, NewFTActivity.class);
+        Intent intent = new Intent(this, NewFoodTestActivity.class);
         startActivity(intent);
     }
 
@@ -143,7 +142,7 @@ public class DashboardActivity extends ActionBarActivity implements AsyncRespons
                     JSONObject jsonObject = foodtestJSONArray.getJSONObject(i);
 
                     // Storing each json item in variable
-                    int id = jsonObject.getInt(TAG_ID_FOODTEST);
+                    int id = jsonObject.getInt(TAG_ID);
                     String name = jsonObject.getString(TAG_NAME);
                     String reagent = jsonObject.getString(TAG_REAGENT);
                     String result = jsonObject.getString(TAG_RESULT);
@@ -172,7 +171,7 @@ public class DashboardActivity extends ActionBarActivity implements AsyncRespons
             }else{
                 // no foodtest found
                 // Launch Add New foodtest Activity
-                Intent intent = new Intent(getApplicationContext(), NewFTActivity.class);
+                Intent intent = new Intent(getApplicationContext(), NewFoodTestActivity.class);
 
                 // Closing all previous activities
                 intent.addFlags(intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -193,7 +192,7 @@ public class DashboardActivity extends ActionBarActivity implements AsyncRespons
 
     private void populateFoodTestList() {
         // Create the adapter to convert the array to views
-        FTArrayAdapter adapter = new FTArrayAdapter(this, foodtestLists);
+        FoodTestArrayAdapter adapter = new FoodTestArrayAdapter(this, foodtestLists);
         // Attach the adapter to a ListView
         ListView listView = (ListView) findViewById(R.id.lvFoodTest);
         listView.setAdapter(adapter);
@@ -206,8 +205,8 @@ public class DashboardActivity extends ActionBarActivity implements AsyncRespons
                 // getting values from selected ListItem
                 String foodtest_id = ((TextView) view.findViewById(R.id.tvId)).getText().toString();
 
-                Intent intent = new Intent(getApplicationContext(), EditFTActivity.class);
-                intent.putExtra(TAG_ID_FOODTEST, foodtest_id);
+                Intent intent = new Intent(getApplicationContext(), EditFoodTestActivity.class);
+                intent.putExtra(TAG_ID, foodtest_id);
                 startActivityForResult(intent, 100);
                 finish();
             }
