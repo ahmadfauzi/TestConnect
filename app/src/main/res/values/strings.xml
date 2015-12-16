@@ -1,29 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">TestConnect</string>
+    <string name="app_name">Uji Makanan</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
     <string name="buttonView">View</string>
     <string name="butttonAdd">Add New</string>
     <string name="title_activity_all_ft">AllFTActivity</string>
-    <string name="title_activity_new_ft">NewFTActivity</string>
-    <string name="title_activity_edit_ft">EditFTActivity</string>
-    <string name="editTextReagent">Reagent</string>
-    <string name="editTextResult">Result</string>
+    <string name="title_activity_new_ft">Tambah Uji</string>
+    <string name="title_activity_edit_ft">Ubah Uji</string>
+    <string name="editTextFoodName">Nama Makanan</string>
+    <string name="editTextReagent">Reagen</string>
+    <string name="editTextResult">Hasil</string>
     <string name="buttonCreate">Create FoodTest</string>
-    <string name="editTextFoodName">Food Name</string>
     <string name="buttonSave">Save</string>
     <string name="buttonDelete">Delete</string>
-    <string name="title_activity_dashboard">DashboardActivity</string>
+    <string name="title_activity_dashboard">Uji Makanan</string>
     <string name="menuTitleSave">menuTitleSave</string>
     <string name="menuTitleDelete">menuTitleDelete</string>
+
     <string-array name="reagen">
+        <item>- Pilih Reagen -</item>
         <item>Borax</item>
-        <item>Rhodamin-B</item>
         <item>Formalin</item>
-        <item>Methanyl-Yellow</item>
         <item>Mercury</item>
+        <item>Methanyl-Yellow</item>
+        <item>Rhodamin-B</item>
     </string-array>
+
+    <string name="title_activity_new_reagent">Tambah Reagen</string>
+    <string name="buttonResult">Lihat Hasil</string>
+    <string name="textViewResult" />
+    <string name="buttonAmbilGambar">Ambil Gambar</string>
 
 </resources>

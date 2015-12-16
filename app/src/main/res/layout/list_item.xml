@@ -27,6 +27,7 @@
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:text="Medium Text"
+                android:textColor="#424242"
                 android:id="@+id/tvName"
                 android:textSize="20dp"
                 android:textIsSelectable="false"
@@ -34,6 +35,7 @@
                 android:layout_gravity="center_horizontal" />
 
             <TextView
+                android:textColor="#424242"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceMedium"
@@ -45,6 +47,7 @@
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:text="Medium Text"
+                android:textColor="#424242"
                 android:id="@+id/tvReagent"
                 android:layout_gravity="center_horizontal"
                 android:textSize="20dp" />
@@ -54,6 +57,7 @@
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:text="Medium Text"
+                android:textColor="#424242"
                 android:id="@+id/tvResult"
                 android:layout_gravity="center_horizontal"
                 android:textSize="20dp" />

@@ -22,7 +22,6 @@ public class ColorBars {
 
     private Context context;
 
-
     public ColorBars(Context context) {
         this.context = context;
         colorBarPath = new ArrayList<ArrayList<String>>();

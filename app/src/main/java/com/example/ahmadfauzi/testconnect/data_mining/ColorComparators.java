@@ -249,6 +249,7 @@ public class ColorComparators {
         // printArray2dDouble(dataTesting);
         KNNClassifier classifier = new KNNClassifier(dataTraining,dataTesting);
         System.out.println("num of data train : "+ this.referenceLab.size());
+        Log.d("ColorComparators","num of data train :" + this.referenceLab.size());
         classifier.setNumberOFClass(this.referenceLab.size());
         this.classResult = classifier.getPrediction();
     }
