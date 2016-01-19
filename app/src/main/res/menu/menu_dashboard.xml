@@ -9,4 +9,11 @@
         android:title="@string/action_settings"
         app:showAsAction="never" />
 
+    <!--<item-->
+        <!--android:id="@+id/action_manage_reagent"-->
+        <!--android:orderInCategory="101"-->
+        <!--android:title="@string/menuManageReagen"-->
+        <!--android:icon="@drawable/ic_manage_reagent"-->
+        <!--app:showAsAction="always" />-->
+
 </menu>

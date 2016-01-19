@@ -3,6 +3,7 @@ package com.example.ahmadfauzi.testconnect.data_mining;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.util.Log;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -16,7 +17,7 @@ public class ColorComparators {
     private ArrayList<Integer> classResult = new ArrayList<Integer>();
     private ArrayList<Integer> votes = new ArrayList<Integer>();
     private Sample sample;
-    private Reagent reagent;
+    private TestType testType;
     private ArrayList<Bitmap> colorBars;
 
     private Integer imageWidth = 10;
@@ -26,9 +27,9 @@ public class ColorComparators {
 
     }
 
-    public ColorComparators(Sample sample, Reagent reagent) {
+    public ColorComparators(Sample sample, TestType testType) {
         this.sample = sample;
-        this.reagent = reagent;
+        this.testType = testType;
     }
 
     public Integer getCompareResult() {
@@ -37,12 +38,13 @@ public class ColorComparators {
         similarityMeasure();
         voteSimilarity();
         //System.out.println(voteCount());
+        Log.d("GetCompareResult","CompareResult = " + String.valueOf(voteCount()));
         return voteCount()-1;
     }
 
     private void colorBarConversion() {
         colorBars = new ArrayList<Bitmap>();
-        colorBars = reagent.getColorBarsImage();
+        colorBars = testType.getColorBarsImage();
         //ArrayList<Color> colors = new ArrayList<Color>();
         ArrayList<RgbColor> colors = new ArrayList<RgbColor>();
         Log.d("ColorComparator", "Color Bar = " + colorBars.toString());
@@ -101,6 +103,8 @@ public class ColorComparators {
                 rgbColor.setB(blueValue);
 
                 colors.add(rgbColor);
+
+                Log.d("getRGB",String.valueOf(redValue) + " " + String.valueOf(blueValue) + " " +String.valueOf(blueValue));
             }
         }
         return colors;
@@ -177,7 +181,7 @@ public class ColorComparators {
             double a = 500 * (X - Y);
             double b = 200 * (Y - Z);
 
-            //   System.out.println("Lab space : "+L+" "+a+" "+b);
+//            Log.d("RGBtoLAB","LAB = " + String.valueOf(L) + " " + String.valueOf(a) + " " + String.valueOf(b));
 
             LabValues.add(new LabColor(L,a,b));
         }
@@ -205,21 +209,6 @@ public class ColorComparators {
     private void similarityMeasure() {
         //fungsi mencari kemiripan dengan menghitung distance data uji terhadap semua warna standar
 
-//	   for(int i=0;i<referenceLab.size();i++) {
-//		   ArrayList<Double> colorDistance = new ArrayList<Double>();
-//		   for(int j=0;j<referenceLab.get(i).size();j++) {
-//			   LabColor reference = new LabColor();
-//			   LabColor test = new LabColor();
-//
-//			   reference = referenceLab.get(i).get(j);
-//			   test = testResultLab.get(j);
-//
-//			   double distance = getEuclidianDistance(reference, test);
-//			   System.out.println("distance "+distance);
-//			   colorDistance.add(distance);
-//		   }
-//		   distance.add(colorDistance);
-//	   }
         ArrayList<ArrayList<Double> > dataTraining = new ArrayList<ArrayList<Double>>();
         ArrayList<ArrayList<Double> > dataTesting = new ArrayList<ArrayList<Double>>();
 
@@ -248,8 +237,7 @@ public class ColorComparators {
         System.out.println("data testting");
         // printArray2dDouble(dataTesting);
         KNNClassifier classifier = new KNNClassifier(dataTraining,dataTesting);
-        System.out.println("num of data train : "+ this.referenceLab.size());
-        Log.d("ColorComparators","num of data train :" + this.referenceLab.size());
+        Log.d("ColorComparators","num of data train = " + String.valueOf(this.referenceLab.size()));
         classifier.setNumberOFClass(this.referenceLab.size());
         this.classResult = classifier.getPrediction();
     }
@@ -274,28 +262,9 @@ public class ColorComparators {
 
         for(int i=0; i<this.classResult.size();i++) {
             int classIndex = this.classResult.get(i);
-            System.out.println(classIndex);
+//            System.out.println(classIndex);
             votes.set(classIndex, votes.get(classIndex) + 1);
         }
-//
-//	   for(int i=0;i<columnSize;i++){
-//		   int index = 0;
-//		   double distanceTemp = 0;
-//		   for(int j=0;j<rowSize;j++) {
-//			   if(j == 0) {
-//				   distanceTemp = distance.get(j).get(i);
-//				   index = j;
-//			   }
-//			   else {
-//				   if(distance.get(j-1).get(i)> distance.get(j).get(i)) {
-//					   distanceTemp = distance.get(j).get(i);
-//					   index = j;
-//				   }
-//			   }
-//		   }
-//		   votes.set(index, votes.get(index) + 1);
-//	   }
-//	   printVotes();
     }
 
     private Integer voteCount() {

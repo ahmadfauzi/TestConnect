@@ -13,7 +13,7 @@ public class FoodTest {
 
     public int idFT;
     public String nameFT;
-    public String reagentFT;
+    public String testTypeFT;
     public String resultFT;
     public Bitmap photoFT;
 
@@ -25,10 +25,10 @@ public class FoodTest {
         this.context = context;
     }
 
-    public FoodTest(int id, String name, String reagent, String result, Bitmap photo) {
+    public FoodTest(int id, String name, String testType, String result, Bitmap photo) {
         this.idFT = id;
         this.nameFT = name;
-        this.reagentFT = reagent;
+        this.testTypeFT = testType;
         this.resultFT = result;
         this.photoFT = photo;
     }
@@ -49,12 +49,12 @@ public class FoodTest {
         this.nameFT = nameFT;
     }
 
-    public String getReagentFT() {
-        return reagentFT;
+    public String getTestTypeFT() {
+        return testTypeFT;
     }
 
-    public void setReagentFT(String reagentFT) {
-        this.reagentFT = reagentFT;
+    public void setTestTypeFT(String testTypeFT) {
+        this.testTypeFT = testTypeFT;
     }
 
     public String getResultFT() {

@@ -39,10 +39,10 @@
             android:textSize="20sp" />
 
         <EditText
-            android:id="@+id/etReagent"
+            android:id="@+id/etTestType"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/editTextReagent"
+            android:hint="@string/editTextTestType"
             android:singleLine="true"
             android:textColor="#424242"
             android:textSize="20sp" />

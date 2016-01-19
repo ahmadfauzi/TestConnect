@@ -5,10 +5,6 @@
     android:background="#ffb9ecff"
     tools:context=".MainActivity">
 
-    <include
-        android:id="@+id/app_bar"
-        layout="@layout/app_bar" />
-
     <ImageView
         android:id="@+id/imageViewMain"
         android:layout_width="261dp"
@@ -16,6 +12,6 @@
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
         android:layout_gravity="center"
-        android:src="@drawable/foodtest_logo" />
+        android:src="@drawable/ujimakanan_logo" />
 
 </RelativeLayout>

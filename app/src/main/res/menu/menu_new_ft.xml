@@ -7,7 +7,7 @@
 
     <item
         android:id="@+id/action_new"
-        android:title="menuTitleNew"
+        android:title="@string/menuNew"
         android:icon="@drawable/ic_action_done"
         app:showAsAction="always"
         />

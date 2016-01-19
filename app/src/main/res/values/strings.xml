@@ -10,7 +10,7 @@
     <string name="title_activity_new_ft">Tambah Uji</string>
     <string name="title_activity_edit_ft">Ubah Uji</string>
     <string name="editTextFoodName">Nama Makanan</string>
-    <string name="editTextReagent">Reagen</string>
+    <string name="editTextTestType">Reagen</string>
     <string name="editTextResult">Hasil</string>
     <string name="buttonCreate">Create FoodTest</string>
     <string name="buttonSave">Save</string>
@@ -19,18 +19,20 @@
     <string name="menuTitleSave">menuTitleSave</string>
     <string name="menuTitleDelete">menuTitleDelete</string>
 
-    <string-array name="reagen">
-        <item>- Pilih Reagen -</item>
-        <item>Borax</item>
+    <string-array name="testType">
+        <item>Pilih Jenis Uji</item>
+        <item>Boraks</item>
         <item>Formalin</item>
-        <item>Mercury</item>
-        <item>Methanyl-Yellow</item>
+        <item>Merkuri</item>
+        <item>Metanil-Yellow</item>
         <item>Rhodamin-B</item>
     </string-array>
 
-    <string name="title_activity_new_reagent">Tambah Reagen</string>
+    <string name="title_activity_new_reagent">Tambah Jenis Uji</string>
     <string name="buttonResult">Lihat Hasil</string>
-    <string name="textViewResult" />
+    <string name="textViewResult">Hasil Uji</string>
     <string name="buttonAmbilGambar">Ambil Gambar</string>
+    <string name="menuNew">menuTitleNew</string>
+    <string name="menuManageReagen">Pengaturan Reagen</string>
 
 </resources>

@@ -1,5 +1,7 @@
 package com.example.ahmadfauzi.testconnect.data_mining;
 
+import android.util.Log;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -25,7 +27,8 @@ public class KNNClassifier {
     public void setNumberOFClass(int numberOFClass) {
         this.numberOfClass = numberOFClass;
         this.numberOfDataEachClass = this.dataTraining.size()/this.numberOfClass;
-        System.out.println("n data train : " +this.dataTraining.size()+" dataperclass : "+this.numberOfDataEachClass);
+//        System.out.println("n data train : " +this.dataTraining.size()+" dataperclass : "+this.numberOfDataEachClass);
+        Log.d("SetNumberOfClass","n data train = " + String.valueOf(this.dataTraining.size()) + "; dataperclass = " + String.valueOf(this.numberOfDataEachClass));
     }
 
     public KNNClassifier(ArrayList<ArrayList<Double>> dataTraining,ArrayList<ArrayList<Double>> dataTesting) {
@@ -51,11 +54,11 @@ public class KNNClassifier {
 
         this.measureDistance(this.dataTraining, this.dataTesting);
         //printArray2dPair(this.distances);
-        System.out.println("masuk voting");
+//        Log.d("GetPrediction","in voting");
         this.voting();
-        System.out.println("selesai voting");
+//        Log.d("GetPrediction","out voting");
         for (Integer integer : classResult) {
-            System.out.println("result "+integer);
+//            Log.d("GetPrediction","result = " + integer);
         }
         return this.classResult;
     }
@@ -77,8 +80,8 @@ public class KNNClassifier {
         for(int i=0;i<deltaPow.size();i++) {
             sum+= deltaPow.get(i);
         }
-
         distance = Math.sqrt(sum);
+
         return distance;
     }
 
@@ -95,17 +98,8 @@ public class KNNClassifier {
                 else {
                     distance.add(new Pair(euclidDist, listTrain.get(listTrain.size()-1)) );
                 }
-                //System.out.print("dist "+euclidDist+" ");
+//                Log.d("MeasureDistance","Euclid distance = " + String.valueOf(euclidDist));
             }
-
-            //	System.out.println("distance in measer "+distance.size());
-            //	c++;
-            //	System.out.println("data test number "+ c);
-//			for (int i=0;i<distance.size();i++) {
-//			System.out.println("firs "+distance.get(i).getToIndex()+"second "+distance.get(i).getDistance());
-//			}
-            //Arrays.sort(distance);
-            //Collections.sort(distance);
             Collections.sort(distance, new Comparator<Pair>() {
                 @Override
                 public int compare(Pair pair1, Pair pair2) {
@@ -176,7 +170,8 @@ public class KNNClassifier {
             centroid.add(dataPerClass);
         }
         for (ArrayList<Double> double1 : centroid) {
-            System.out.println("centroid : "+double1);
+//            System.out.println("centroid : "+double1);
+            Log.d("ObtainCentroid","centroid = " + double1.toString());
         }
         return centroid;
     }
@@ -203,6 +198,7 @@ public class KNNClassifier {
 //				}
 //			}
         }
+        Log.d("GetTreshold","treshold = " + String.valueOf(treshold));
         return treshold;
     }
 

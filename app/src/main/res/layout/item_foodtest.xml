@@ -13,12 +13,14 @@
         <ImageView
             android:layout_width="70dp"
             android:layout_height="70dp"
-            android:id="@+id/ivShowPhoto" />
+            android:id="@+id/ivShowPhoto"
+            android:visibility="gone" />
 
         <LinearLayout
             android:orientation="vertical"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp">
 
             <TextView
                 android:textColor="#424242"
@@ -46,7 +48,7 @@
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:text="Medium Text"
                 android:textColor="#424242"
-                android:id="@+id/tvReagent"
+                android:id="@+id/tvTestType"
                 android:layout_gravity="center_horizontal"
                 android:textSize="20dp" />
 

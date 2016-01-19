@@ -78,7 +78,7 @@ public class ColorBars {
 
         try {
             AssetManager assetManager = context.getAssets();
-            InputStream input = assetManager.open("path_reagent.txt");
+            InputStream input = assetManager.open("path_testtype.txt");
             BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(input, "UTF-8"));
 
             while ((line = bufferedReader.readLine()) != null) {
